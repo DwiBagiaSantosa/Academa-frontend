@@ -1,5 +1,6 @@
 import React from 'react'
 import TableContent from './table-content'
+import { Link } from 'react-router-dom'
 
 export default function ManageCourseDetail() {
   return (
@@ -17,12 +18,12 @@ export default function ManageCourseDetail() {
                 </h1>
             </div>
             <div class="flex items-center gap-3">
-                <a href="#" class="w-fit rounded-full border border-[#060A23] p-[14px_20px] font-semibold text-nowrap">
+                <Link to="#" class="w-fit rounded-full border border-[#060A23] p-[14px_20px] font-semibold text-nowrap">
                     Edit Course
-                </a>
-                <a href="course-learning-video.html" class="w-fit rounded-full p-[14px_20px] font-semibold text-[#FFFFFF] bg-[#662FFF] text-nowrap">
+                </Link>
+                <Link to={`/manager/courses/1/preview`} class="w-fit rounded-full p-[14px_20px] font-semibold text-[#FFFFFF] bg-[#662FFF] text-nowrap">
                     Preview
-                </a>
+                </Link>
             </div>
         </header>
         <section id="CourseInfo" class="flex gap-[50px]">
