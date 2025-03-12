@@ -1,9 +1,10 @@
 import { createBrowserRouter } from "react-router-dom"
-import ManagerHome from "../pages/ManagerHome"
+import ManagerHome from "../pages/manager/home"
 import SignIn from "../pages/SignIn"
 import SignUp from "../pages/SignUp"
 import SuccessCheckout from "../pages/SuccessCheckout"
 import LayoutDashboard from "../components/layout"
+import ManageCourse from "../pages/manager/courses"
 
 const router = createBrowserRouter([
   {
@@ -23,12 +24,15 @@ const router = createBrowserRouter([
     element: <SuccessCheckout/>
   },
   {
-    path: "manager",
+    path: "/manager",
     element: <LayoutDashboard/>,
     children: [
       {
         index: true,
         element: <ManagerHome/>
+      },{
+        path: "/manager/courses",
+        element: <ManageCourse/>
       }
     ]
   }
