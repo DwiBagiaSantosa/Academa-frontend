@@ -6,10 +6,11 @@ import { Outlet, useMatch } from 'react-router-dom'
 const LayoutDashboard = ({
   isAdmin = true
 }) => {
-  const isPreviewPage = useMatch('/manager/courses/:id/preview')
+  const isManagerPreviewPage = useMatch('/manager/courses/:id/preview')
+  const isStudentPreviewPage = useMatch('/student/detail-course/:id')
   return (
     <>
-    {isPreviewPage !== null ? (
+    {isManagerPreviewPage !== null || isStudentPreviewPage !== null ? (
       <Outlet/>
     ) : (
       <div className="flex min-h-screen">
