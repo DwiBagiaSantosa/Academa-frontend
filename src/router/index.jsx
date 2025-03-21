@@ -13,6 +13,7 @@ import ManageCoursePreview from "../pages/manager/course-preview"
 import ManageStudents from "../pages/manager/students"
 import StudentPage from "../pages/student"
 import secureLocalStorage from "react-secure-storage"
+import { getCourses } from "../services/courseService"
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,12 @@ const router = createBrowserRouter([
         element: <ManagerHome/>
       },{
         path: "/manager/courses",
+        loader: async () => {
+          const data = await getCourses()
+          console.log("🚀 ~ loader: ~ data:", data)
+
+          return data
+        },
         element: <ManageCourse/>
       },
       {
