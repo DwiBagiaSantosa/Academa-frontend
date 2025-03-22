@@ -13,7 +13,7 @@ import ManageCoursePreview from "../pages/manager/course-preview"
 import ManageStudents from "../pages/manager/students"
 import StudentPage from "../pages/student"
 import secureLocalStorage from "react-secure-storage"
-import { getCategories, getCourses } from "../services/courseService"
+import { getCategories, getCourseDetail, getCourses } from "../services/courseService"
 
 const router = createBrowserRouter([
   {
@@ -64,7 +64,18 @@ const router = createBrowserRouter([
         loader: async () => {
           const categories = await getCategories()
 
-          return categories
+          return {categories, course: null}
+        },
+        element: <ManageCreateCourse/>
+      },
+      {
+        path: "/manager/courses/edit/:id",
+        loader: async ({params}) => {
+          const categories = await getCategories()
+          const course = await getCourseDetail(params.id)
+          // console.log("🚀 ~ loader: ~ course:", course)
+
+          return {categories, course: course?.data}
         },
         element: <ManageCreateCourse/>
       },
