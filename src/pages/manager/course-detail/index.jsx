@@ -1,9 +1,12 @@
 import React from 'react'
 import TableContent from './table-content'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useLoaderData } from 'react-router-dom'
 
 export default function ManageCourseDetail() {
     const {id} = useParams()
+
+    const course = useLoaderData()
+    console.log("🚀 ~ ManageCourseDetail ~ course:", course)
 
   return (
     <>
@@ -15,8 +18,7 @@ export default function ManageCourseDetail() {
         <header class="flex items-center justify-between gap-[30px]">
             <div>
                 <h1 class="font-extrabold text-[28px] leading-[42px]">
-                    Mastering React TypeScript 7 <br/>
-                    Website Development
+                    {course?.name}
                 </h1>
             </div>
             <div class="flex items-center gap-3">
@@ -30,20 +32,20 @@ export default function ManageCourseDetail() {
         </header>
         <section id="CourseInfo" class="flex gap-[50px]">
             <div id="Thumbnail" class="flex shrink-0 w-[480px] h-[250px] rounded-[20px] bg-[#D9D9D9] overflow-hidden">
-                <img src="/assets/images/thumbnails/th-4.png" class="w-full h-full object-cover" alt="thumbnail"/>
+                <img src={course?.thumbnail_url} class="w-full h-full object-cover" alt="thumbnail"/>
             </div>
             <div class="grid grid-cols-2 gap-5 w-full">
                 <div class="flex flex-col rounded-[20px] border border-[#CFDBEF] p-5 gap-4">
                     <img src="/assets/images/icons/profile-2user-purple.svg" class="w-8 h-8" alt="icon"/>
-                    <p class="font-semibold">12,489 Students</p>
+                    <p class="font-semibold">{course?.students.length}</p>
                 </div>
                 <div class="flex flex-col rounded-[20px] border border-[#CFDBEF] p-5 gap-4">
                     <img src="/assets/images/icons/crown-purple.svg" class="w-8 h-8" alt="icon"/>
-                    <p class="font-semibold">Programming</p>
+                    <p class="font-semibold">{course?.category.name}</p>
                 </div>
                 <div class="flex flex-col rounded-[20px] border border-[#CFDBEF] p-5 gap-4">
                     <img src="/assets/images/icons/note-favorite-purple.svg" class="w-8 h-8" alt="icon"/>
-                    <p class="font-semibold">873 Contents</p>
+                    <p class="font-semibold">{course?.details.length} Contents</p>
                 </div>
                 <div class="flex flex-col rounded-[20px] border border-[#CFDBEF] p-5 gap-4">
                     <img src="/assets/images/icons/cup-purple.svg" class="w-8 h-8" alt="icon"/>
@@ -51,7 +53,7 @@ export default function ManageCourseDetail() {
                 </div>
             </div>
         </section>
-        <TableContent/>
+        <TableContent details={course?.details ?? []} courseId={course?._id} />
     </>
   )
 }
