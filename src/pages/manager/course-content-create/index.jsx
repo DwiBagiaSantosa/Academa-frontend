@@ -4,38 +4,56 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { mutateContentSchema } from '../../../utils/zodSchema';
-import { createCourseContent } from '../../../services/courseService';
-import { useNavigate, useParams } from 'react-router-dom';
+import { createCourseContent, updateCourseContent } from '../../../services/courseService';
+import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 
 export default function ManageContentCreate() {
+    const {id, contentId} = useParams()
+    const navigate = useNavigate()
+
+    const content = useLoaderData()
+    // console.log("🚀 ~ ManageContentCreate ~ content:", content)
 
     const initialEditor = '<h1>Input your content here</h1>'
 
     const {register, handleSubmit, formState: { errors }, setValue, watch} = useForm({
         resolver: zodResolver(mutateContentSchema),
         defaultValues: {
-            text: initialEditor,
+            title: content?.title,
+            type: content?.type,
+            youtubeId: content?.youtubeId,
+            // text: content?.text ? content.text : initialEditor,
         }
     });
 
-    const [editorContent, setEditorContent] = useState(initialEditor)
+    const [editorContent, setEditorContent] = useState(content?.text ? content.text : initialEditor)
 
-    const {isLoading, mutateAsync} = useMutation({
+    const mutateCreate = useMutation({
         mutationFn: (data) => createCourseContent(data)
     })
 
-    const {id} = useParams()
-    const navigate = useNavigate()
+    const mutateUpdate = useMutation({
+        mutationFn: (data) => updateCourseContent(data, contentId)
+    })
+
 
     const type = watch('type')
 
     const onSubmit = async(values) => {
         // console.log("🚀 ~ onSubmit ~ values:", values)
         try {
-            await mutateAsync({
-                ...values,
-                courseId: id
-            })
+            if (content === undefined) {
+                await mutateCreate.mutateAsync({
+                    ...values,
+                    courseId: id
+                })
+            } else {
+                await mutateUpdate.mutateAsync({
+                    ...values,
+                    courseId: id
+                })
+            }
+
 
             navigate(`/manager/courses/${id}`)
         } catch (error) {
@@ -49,7 +67,7 @@ export default function ManageContentCreate() {
         <div id="Breadcrumb" className="flex items-center gap-5 *:after:content-['/'] *:after:ml-5">
             <span className="last-of-type:after:content-[''] last-of-type:font-semibold">Manage Course</span>
             <span className="last-of-type:after:content-[''] last-of-type:font-semibold">Course</span>
-            <span className="last-of-type:after:content-[''] last-of-type:font-semibold">Add Content</span>
+            <span className="last-of-type:after:content-[''] last-of-type:font-semibold">{content === undefined ? 'Add' : 'Edit'} Content</span>
         </div>
         <header className="flex items-center justify-between gap-[30px]">
             <div className="flex items-center gap-[30px]">
@@ -57,7 +75,7 @@ export default function ManageContentCreate() {
                     <img src="/assets/images/thumbnails/th-1.png" className="w-full h-full object-cover" alt="thumbnail"/>
                 </div>
                 <div>
-                    <h1 className="font-extrabold text-[28px] leading-[42px]">Add Content</h1>
+                    <h1 className="font-extrabold text-[28px] leading-[42px]">{content === undefined ? 'Add' : 'Edit'} Content</h1>
                     <p className="text-[#838C9D] mt-[1]">Give a best content for the course</p>
                 </div>
             </div>
@@ -159,8 +177,8 @@ export default function ManageContentCreate() {
                 <button type="button" className="w-full rounded-full border border-[#060A23] p-[14px_20px] font-semibold text-nowrap">
                     Save as Draft
                 </button>
-                <button type="submit" disabled={isLoading} className="w-full rounded-full p-[14px_20px] font-semibold text-[#FFFFFF] bg-[#662FFF] text-nowrap">
-                    Add Content Now
+                <button type="submit" disabled={content === undefined ? mutateCreate.isLoading : mutateUpdate.isLoading} className="w-full rounded-full p-[14px_20px] font-semibold text-[#FFFFFF] bg-[#662FFF] text-nowrap">
+                    {content === undefined ? 'Add' : 'Edit'} Content Now
                 </button>
             </div>
         </form>

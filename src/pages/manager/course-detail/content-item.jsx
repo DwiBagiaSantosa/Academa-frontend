@@ -23,8 +23,8 @@ export default function ContentItem({
             <h3 class="font-bold text-xl leading-[30px] line-clamp-1">{title}</h3>
             <div class="flex items-center gap-5">
                 <div class="flex items-center gap-[6px] mt-[6px]">
-                    <img src="/assets/images/icons/note-favorite-purple.svg" class="w-5 h-5" alt="icon"/>
-                    <p class="text-[#838C9D]">Video Content</p>
+                    <img src={`/assets/images/icons/${type === "text" ? "note-favorite-purple.svg": "video-play-purple.svg"}`} class="w-5 h-5" alt="icon"/>
+                    <p class="text-[#838C9D]">{type} Content</p>
                 </div>
             </div>
         </div>
