@@ -158,7 +158,7 @@ export default function ManageContentCreate() {
                             initialData: '<h1>Hello from CKEditor 5!</h1>',
                         } }
                     /> */}
-                    <Editor value={editorContent} onChange={(e)=> {
+                    <Editor className='prose' value={editorContent} onChange={(e)=> {
                         const data = e.target.value
                         setEditorContent(data)
                         setValue('text', data)
