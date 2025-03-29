@@ -1,6 +1,8 @@
 import React from 'react'
 import Proptypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { Link, useRevalidator } from 'react-router-dom'
+import { useMutation } from '@tanstack/react-query'
+import { deleteCourseContent } from '../../../services/courseService'
 
 export default function ContentItem({
     id = "1", 
@@ -9,7 +11,25 @@ export default function ContentItem({
     title = "Install VSCode di Windows",
     courseId = "505"
 }) {
+
+    const revalidator = useRevalidator()
+
+    const {isLoading, mutateAsync} = useMutation({
+        mutationFn: () => deleteCourseContent(id)
+    })
+
+    const handleDelete = async () => {
+        try {
+            await mutateAsync()
+
+            revalidator.revalidate()
+        } catch (error) {
+            console.log("🚀 ~ handleDelete ~ error:", error)
+        }
+    }
+
   return (
+
     <div class="card flex items-center gap-5">
         <div class="relative flex shrink-0 w-[140px] h-[110px] ">
             <p class="absolute -top-[10px] -left-[10px] flex shrink-0 w-[30px] h-[30px] rounded-full items-center justify-center text-center bg-[#662FFF] text-white">
@@ -32,7 +52,7 @@ export default function ContentItem({
             <Link to={`/manager/courses/${courseId}/edit/${id}`} class="w-fit rounded-full border border-[#060A23] p-[14px_20px] font-semibold text-nowrap">
                 Edit Content
             </Link>
-            <button type="button" class="w-fit rounded-full p-[14px_20px] bg-[#FF435A] font-semibold text-white text-nowrap">Delete</button>
+            <button disabled={isLoading} onClick={handleDelete} type="button" class="w-fit rounded-full p-[14px_20px] bg-[#FF435A] font-semibold text-white text-nowrap">Delete</button>
         </div>
     </div>
   )
