@@ -1,7 +1,47 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createStudentSchema } from "../../../utils/zodSchema";
+import { useMutation } from "@tanstack/react-query";
+import { createStudent } from "../../../services/studentService";
+
 
 export default function ManageStudentCreate() {
+  const {register, handleSubmit, formState: { errors }, setValue} = useForm({
+    resolver: zodResolver(createStudentSchema),
+  })
+
+  const navigate = useNavigate()
+
+  const {isPending, mutateAsync} = useMutation({
+    mutationFn: (data) => createStudent(data)
+  })
+
+  const [photo, setPhoto] = useState(null);
+  const inputPhotoRef = useRef(null)
+
+
+  const onSubmit = async (values) => {
+    // console.log("🚀 ~ onSubmit ~ values:", values)
+    try {
+      const formData = new FormData();
+
+      formData.append("name", values.name);
+      formData.append("email", values.email);
+      formData.append("password", values.password);
+      formData.append("avatar", photo);
+
+      await mutateAsync(formData)
+
+      navigate('/manager/students')
+    } catch (error) {
+      console.log("🚀 ~ onSubmit ~ error:", error)
+
+    }
+    
+  }
+
   return (
     <>
       <header className="flex items-center justify-between gap-[30px]">
@@ -19,7 +59,7 @@ export default function ManageStudentCreate() {
         </div>
       </header>
       <form
-        action="manage-student.html"
+        onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col w-[550px] rounded-[30px] p-[30px] gap-[30px] bg-[#F8FAFB]"
       >
         <div className="relative flex flex-col gap-[10px]">
@@ -34,6 +74,7 @@ export default function ManageStudentCreate() {
               <button
                 type="button"
                 id="trigger-input"
+                onClick={() => inputPhotoRef?.current.click()}
                 className="absolute top-0 left-0 w-full h-full flex justify-center items-center gap-3 z-0"
               >
                 <img
@@ -44,27 +85,40 @@ export default function ManageStudentCreate() {
               </button>
               <img
                 id="thumbnail-preview"
-                src=""
-                className="w-full h-full object-cover hidden"
+                src={photo !== null ? URL.createObjectURL(photo) : ""}
+                className={`w-full h-full object-cover ${photo !== null ? "block" : "hidden"}`}
                 alt="thumbnail"
               />
             </div>
             <button
               type="button"
               id="delete-preview"
-              className="w-12 h-12 rounded-full z-10 hidden"
+              onClick={() => {
+                setPhoto(null);
+                setValue("photo", null);
+              }}
+              className={`w-12 h-12 rounded-full z-10 ${photo !== null ? "block" : "hidden"}`}
             >
               <img src="/assets/images/icons/delete.svg" alt="delete" />
             </button>
           </div>
           <input
+            {...register("photo")}
+            ref={inputPhotoRef}
             type="file"
-            name="thumbnail"
             id="thumbnail"
+            onChange={(e) => {
+              if (e.target.files) {
+                setPhoto(e.target.files[0]);
+                setValue("photo", e.target.files[0]);
+              }
+            }}
             accept="image/*"
             className="absolute bottom-0 left-1/4 -z-10"
-            required
           />
+          <span className="error-message text-[#FF435A]">
+            {errors?.photo?.message}
+          </span>
         </div>
         <div className="flex flex-col gap-[10px]">
           <label for="name" className="font-semibold">
@@ -77,14 +131,17 @@ export default function ManageStudentCreate() {
               alt="icon"
             />
             <input
+              {...register("name")}
               type="text"
-              name="name"
               id="name"
               className="appearance-none outline-none w-full py-3 font-semibold placeholder:font-normal placeholder:text-[#838C9D] !bg-transparent"
               placeholder="Write your name"
-              required
+              
             />
           </div>
+          <span className="error-message text-[#FF435A]">
+            {errors?.name?.message}
+          </span>
         </div>
         <div className="flex flex-col gap-[10px]">
           <label for="email" className="font-semibold">
@@ -97,14 +154,17 @@ export default function ManageStudentCreate() {
               alt="icon"
             />
             <input
+              {...register("email")}
               type="email"
-              name="email"
               id="email"
               className="appearance-none outline-none w-full py-3 font-semibold placeholder:font-normal placeholder:text-[#838C9D] !bg-transparent"
               placeholder="Write your email address"
-              required
+              
             />
           </div>
+          <span className="error-message text-[#FF435A]">
+            {errors?.email?.message}
+          </span>
         </div>
         <div className="flex flex-col gap-[10px]">
           <label for="password" className="font-semibold">
@@ -117,24 +177,28 @@ export default function ManageStudentCreate() {
               alt="icon"
             />
             <input
+              {...register("password")}
               type="password"
-              name="password"
               id="password"
               className="appearance-none outline-none w-full py-3 font-semibold placeholder:font-normal placeholder:text-[#838C9D] !bg-transparent"
               placeholder="Type password"
-              required
+              
             />
           </div>
+          <span className="error-message text-[#FF435A]">
+            {errors?.password?.message}
+          </span>
         </div>
         <div className="flex items-center gap-[14px]">
           <button
-            type="submit"
+            type="button"
             className="w-full rounded-full border border-[#060A23] p-[14px_20px] font-semibold text-nowrap"
           >
             Save as Draft
           </button>
           <button
             type="submit"
+            disabled={isPending}
             className="w-full rounded-full p-[14px_20px] font-semibold text-[#FFFFFF] bg-[#662FFF] text-nowrap"
           >
             Add Now
