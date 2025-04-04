@@ -4,7 +4,7 @@ import StudentItem from './student-item'
 
 export default function ManageStudents() {
     const students = useLoaderData()
-    console.log("🚀 ~ ManageStudents ~ students:", students)
+    // console.log("🚀 ~ ManageStudents ~ students:", students)
     
 
   return (

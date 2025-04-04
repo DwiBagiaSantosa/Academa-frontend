@@ -55,3 +55,5 @@ export const createStudentSchema = z.object({
     password: z.string().min(8, { message: "Password must be at least 8 characters long" }),
     photo: z.any().refine((file) => file?.name, { message: "Photo is required" }),
 })
+
+export const updateStudentSchema = createStudentSchema.omit({ photo: true, password: true })
