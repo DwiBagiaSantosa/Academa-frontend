@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useRef, useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import { addStudentCourseSchema, createCourseSchema, updateCourseSchema } from "../../../utils/zodSchema";
+import { addStudentCourseSchema } from "../../../utils/zodSchema";
 import { addStudentCourse } from "../../../services/courseService";
 
 export default function StudentForm() {
@@ -42,7 +42,7 @@ export default function StudentForm() {
       <header className="flex items-center justify-between gap-[30px]">
         <div>
           <h1 className="font-extrabold text-[28px] leading-[42px]">
-            New Course
+            Add Student
           </h1>
           <p className="text-[#838C9D] mt-[1]">Create new future for company</p>
         </div>
@@ -102,6 +102,7 @@ export default function StudentForm() {
           </button>
           <button
             type="submit"
+            disabled={isPending}
             className="w-full rounded-full p-[14px_20px] font-semibold text-[#FFFFFF] bg-[#662FFF] text-nowrap"
           >
             Add Now
