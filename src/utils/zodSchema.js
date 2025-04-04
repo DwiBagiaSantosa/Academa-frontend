@@ -48,3 +48,12 @@ export const mutateContentSchema = z.object({
         }
     }
 })
+
+export const createStudentSchema = z.object({
+    name: z.string().min(5, { message: "Full Name must be at least 5 characters long" }),
+    email: z.string().email(),
+    password: z.string().min(8, { message: "Password must be at least 8 characters long" }),
+    photo: z.any().refine((file) => file?.name, { message: "Photo is required" }),
+})
+
+export const updateStudentSchema = createStudentSchema.omit({ photo: true, password: true })
