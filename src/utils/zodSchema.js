@@ -57,3 +57,7 @@ export const createStudentSchema = z.object({
 })
 
 export const updateStudentSchema = createStudentSchema.omit({ photo: true, password: true })
+
+export const addStudentCourseSchema = z.object({
+    studentId: z.string().min(5, { message: "Please select a student" }),
+})
