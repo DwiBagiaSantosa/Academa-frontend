@@ -1,10 +1,15 @@
 import React from 'react'
 import Courses from './courses'
 import Students from './students'
-
+import { useLoaderData } from 'react-router-dom'
 
 
 const ManagerHome = () => {
+    const overviews = useLoaderData()
+    // console.log("🚀 ~ ManagerHome ~ overviews:", overviews)
+
+    
+
   return (
     <>
       <header className="flex items-center justify-between gap-[30px]">
@@ -26,28 +31,28 @@ const ManagerHome = () => {
               <div className="flex flex-col rounded-[20px] p-5 gap-5 bg-white shadow-[0_4px_4px_0_#E0E2EF]">
                   <img src="/assets/images/icons/profile-2user-purple.svg" className="w-[46px] h-[46px]" alt="icon"/>
                   <div>
-                      <p className="font-extrabold text-2xl leading-[36px]">189,498</p>
+                      <p className="font-extrabold text-2xl leading-[36px]">{overviews?.totalStudent}</p>
                       <p className="text-[#838C9D]">Total Students</p>
                   </div>
               </div>
               <div className="flex flex-col rounded-[20px] p-5 gap-5 bg-white shadow-[0_4px_4px_0_#E0E2EF]">
                   <img src="/assets/images/icons/note-favorite-purple.svg" className="w-[46px] h-[46px]" alt="icon"/>
                   <div>
-                      <p className="font-extrabold text-2xl leading-[36px]">7,221</p>
+                      <p className="font-extrabold text-2xl leading-[36px]">{overviews?.totalCourse}</p>
                       <p className="text-[#838C9D]">Total Courses</p>
                   </div>
               </div>
               <div className="flex flex-col rounded-[20px] p-5 gap-5 bg-white shadow-[0_4px_4px_0_#E0E2EF]">
                   <img src="/assets/images/icons/video-play-purple.svg" className="w-[46px] h-[46px]" alt="icon"/>
                   <div>
-                      <p className="font-extrabold text-2xl leading-[36px]">893,891</p>
+                      <p className="font-extrabold text-2xl leading-[36px]">{overviews?.totalVideo}</p>
                       <p className="text-[#838C9D]">Video Content</p>
                   </div>
               </div>
               <div className="flex flex-col rounded-[20px] p-5 gap-5 bg-white shadow-[0_4px_4px_0_#E0E2EF]">
                   <img src="/assets/images/icons/note-purple.svg" className="w-[46px] h-[46px]" alt="icon"/>
                   <div>
-                      <p className="font-extrabold text-2xl leading-[36px]">12,812</p>
+                      <p className="font-extrabold text-2xl leading-[36px]">{overviews?.totalText}</p>
                       <p className="text-[#838C9D]">Text Content</p>
                   </div>
               </div>
