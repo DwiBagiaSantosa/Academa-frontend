@@ -1,16 +1,16 @@
 import React from 'react'
 import secureLocalStorage from 'react-secure-storage'
-import { STORAGE_KEY, MANAGER_SESSION } from '../utils/const'
+import { STORAGE_KEY, MANAGER_SESSION, STUDENT_SESSION } from '../utils/const'
 import { useRouteLoaderData } from 'react-router-dom'
 
-const Header = () => {
-    const session = useRouteLoaderData(MANAGER_SESSION)
+const Header = ({type = 'manager'}) => {
+    const session = useRouteLoaderData(type === 'manager' ? MANAGER_SESSION : STUDENT_SESSION)
     // console.log("🚀 ~ Header ~ session:", session)
 
     const handleLogout = () => {
         secureLocalStorage.removeItem(STORAGE_KEY)
 
-        window.location.replace('/manager/sign-in')
+        window.location.replace(`/${type}/sign-in`)
     }
 
   return (
@@ -27,7 +27,7 @@ const Header = () => {
             <button type="button" id="profileButton" className="flex shrink-0 w-[50px] h-[50px] rounded-full overflow-hidden">
                 <img src="/assets/images/photos/photo-1.png" className="w-full h-full object-cover" alt="profile photos"/>
             </button>
-            <div id="ProfileDropdown" className="absolute top-full hidden group-hover:block">
+            <div id="ProfileDropdown" className="absolute top-full hidden group-hover:block z-30">
                 <ul className="flex flex-col w-[200px] rounded-[20px] border border-[#CFDBEF] p-5 gap-4 bg-white mt-4">
                     <li className="font-semibold">
                         <a href="#">My Account</a>

@@ -1,5 +1,5 @@
 import { createBrowserRouter, redirect } from "react-router-dom"
-import { MANAGER_SESSION, STORAGE_KEY } from "../utils/const"
+import { MANAGER_SESSION, STORAGE_KEY, STUDENT_SESSION } from "../utils/const"
 import ManagerHome from "../pages/manager/home"
 import SignIn from "../pages/SignIn"
 import SignUp from "../pages/SignUp"
@@ -15,7 +15,7 @@ import StudentPage from "../pages/student"
 import secureLocalStorage from "react-secure-storage"
 import { getCategories, getCourseDetail, getCourses, getDetailContent, getStudentCourse } from "../services/courseService"
 import ManageStudentCreate from "../pages/manager/students-create"
-import { getStudentById, getStudents } from "../services/studentService"
+import { getCourseStudent, getStudentById, getStudents } from "../services/studentService"
 import StudentCourseList from "../pages/manager/student-course"
 import StudentForm from "../pages/manager/student-course/student-form"
 import { getOverviews } from "../services/overviewService"
@@ -191,17 +191,50 @@ const router = createBrowserRouter([
   },
   {
     path: "/student",
+    id: STUDENT_SESSION,
+    loader: async () => {
+      const session = secureLocalStorage.getItem(STORAGE_KEY)
+
+      if (!session || session.role !== 'student') {
+        throw redirect('/student/sign-in')
+      }
+
+      return session
+    },
     element: <LayoutDashboard isAdmin={false}/>,
     children:[
       {
         index: true,
+        loader: async () => {
+          const courses = await getCourseStudent()
+
+          return courses?.data
+        },
         element: <StudentPage/>
       },
       {
         path: "/student/detail-course/:id",
-        element: <ManageCoursePreview/>
+        loader: async ({params}) => {
+          const course = await getCourseDetail(params.id, true)
+
+          return course?.data
+        },
+        element: <ManageCoursePreview isAdmin={false}/>
       }
     ]
+  },
+  {
+    path: "/student/sign-in",
+    loader: async () => {
+      const session = secureLocalStorage.getItem(STORAGE_KEY)
+
+      if (session && session.role === 'student') {
+        throw redirect('/student')
+      }
+
+      return true
+    },
+    element: <SignIn type="student" />
   }
 ])
 
