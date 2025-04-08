@@ -26,13 +26,18 @@ const router = createBrowserRouter([
     loader: async () => {
       const session = secureLocalStorage.getItem(STORAGE_KEY)
 
-      if (!session || session.role !== 'manager') {
-        throw redirect('/manager/sign-in')
+      if (session) {
+        throw redirect(`/${session.role}`)
       }
+
 
       return true
     },
-    element: <ManagerHome/>
+    element: <SignIn />
+  },
+  {
+    path: "/sign-up",
+    element: <SignUp />
   },
   {
     path: "/manager/sign-in",
@@ -69,9 +74,10 @@ const router = createBrowserRouter([
     id: MANAGER_SESSION,
     loader: async () => {
       const session = secureLocalStorage.getItem(STORAGE_KEY)
+      // console.log("🚀 ~ loader: ~ session:", session.role)
 
       if (!session || session.role !== 'manager') {
-        throw redirect('/manager/sign-in')
+        throw redirect('/')
       }
 
       return session
@@ -90,7 +96,7 @@ const router = createBrowserRouter([
         path: "/manager/courses",
         loader: async () => {
           const data = await getCourses()
-          console.log("🚀 ~ loader: ~ data:", data)
+          // console.log("🚀 ~ loader: ~ data:", data)
 
           return data
         },
@@ -120,7 +126,7 @@ const router = createBrowserRouter([
         path: "/manager/courses/:id",
         loader: async ({params}) => {
           const course = await getCourseDetail(params.id)
-          console.log("🚀 ~ loader: ~ course:", course)
+          // console.log("🚀 ~ loader: ~ course:", course)
           return course?.data
         },
         element: <ManageCourseDetail/>
@@ -196,7 +202,7 @@ const router = createBrowserRouter([
       const session = secureLocalStorage.getItem(STORAGE_KEY)
 
       if (!session || session.role !== 'student') {
-        throw redirect('/student/sign-in')
+        throw redirect('/')
       }
 
       return session

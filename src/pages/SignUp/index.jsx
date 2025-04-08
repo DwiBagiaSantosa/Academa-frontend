@@ -1,28 +1,54 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Navbar from '../../components/navbar'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signUpSchema } from '../../utils/zodSchema'
 import Pricing from './pricing'
+import { useMutation } from '@tanstack/react-query'
+import { postSignUp } from '../../services/authService'
+import secureLocalStorage from 'react-secure-storage'
+import { STORAGE_KEY } from '../../utils/const'
 
 const SignUp = () => {
-    const [dataSignUp, setDataSignUp] = useState(null)
-    const [mode, setMode] = useState('AUTH')
+    // const [dataSignUp, setDataSignUp] = useState(null)
+    // const [mode, setMode] = useState('AUTH')
+
+    const navigate = useNavigate()
+
+    const { isPending, mutateAsync} = useMutation({
+        mutationFn: (data) => postSignUp(data)
+    })
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(signUpSchema)
     })
 
-    const onSubmit = (data) => {
-        console.log(data);
-        setDataSignUp(data)
-        setMode('PRICING')
+    const onSubmit = async(data) => {
+        // console.log(data);
+        // setDataSignUp(data)
+        // setMode('PRICING')
+
+        try {
+            if(!data) return
+
+            const response = await mutateAsync(data)
+
+            secureLocalStorage.setItem(STORAGE_KEY, response.data)
+
+            if(response.data.role === 'manager') {
+                navigate('/manager')
+            } else {
+                navigate('/student')
+            }
+        } catch (error) {
+            console.log("🚀 ~ submitData ~ error:", error)
+        }
     }
 
   return (
     <>
-        {mode === 'AUTH' ? (
+        {/* {mode === 'AUTH' ? ( */}
             <div className="relative flex flex-col flex-1 p-[10px]">
                 <div className="absolute w-[calc(100%-20px)] min-h-[calc(100vh-20px)] h-[calc(100%-20px)] bg-[#060A23] -z-10 rounded-[20px]">
                     <img src="/assets/images/backgrounds/background-glow.png" className="absolute bottom-0 transform -translate-x-1/2 left-1/2" alt="" />
@@ -30,12 +56,12 @@ const SignUp = () => {
                 <nav className="flex items-center justify-between p-[30px]">
                     <Navbar />
                     <div className="flex items-center gap-3">
-                        <Link to="/manager/sign-in" >
+                        {/* <Link to="/manager/sign-in" >
                             <div className="flex items-center gap-3 w-fit rounded-full border p-[14px_20px] transition-all duration-300 hover:bg-[#662FFF] hover:border-[#8661EE] hover:shadow-[-10px_-6px_10px_0_#7F33FF_inset] bg-[#070B24] border-[#24283E] shadow-[-10px_-6px_10px_0_#181A35_inset]">
                                 <span className="font-semibold text-white">My Dashboard</span>
                             </div>
-                        </Link>           
-                        <Link to="/manager/sign-in" >
+                        </Link>            */}
+                        <Link to="/" >
                             <div className="flex items-center gap-3 w-fit rounded-full border p-[14px_20px] transition-all duration-300 hover:bg-[#662FFF] hover:border-[#8661EE] hover:shadow-[-10px_-6px_10px_0_#7F33FF_inset] bg-[#662FFF] border-[#8661EE] shadow-[-10px_-6px_10px_0_#7F33FF_inset]">
                                 <span className="font-semibold text-white">Sign In</span>
                             </div>
@@ -64,8 +90,24 @@ const SignUp = () => {
                             <input type="password" name="password" id="password" className="appearance-none outline-none !bg-transparent w-full font-semibold text-white placeholder:font-normal placeholder:text-[#6B6C7F]" placeholder="Type your secure password" {...register('password')} />
                         </div>
                         {errors.password?.message && <p className='text-red-500 text-xs -mt-5 mx-auto'>{errors.password?.message}</p>}
+                        <div className="flex items-center gap-3 w-full rounded-full border p-[14px_20px] transition-all duration-300 focus-within:border-[#8661EE] focus-within:shadow-[-10px_-6px_10px_0_#7F33FF_inset] bg-[#070B24] border-[#24283E] shadow-[-10px_-6px_10px_0_#181A35_inset]">
+                            <img src="/assets/images/icons/user-octagon-white.svg" className="w-6 h-6 flex shrink-0" alt="icon" />
+                            <select
+                                name="role"
+                                id="role"
+                                {...register('role')}
+                                className="appearance-none outline-none !bg-transparent w-full font-semibold text-white placeholder:font-normal placeholder:text-[#6B6C7F] bg-[#070B24]"
+                            >
+                                <option value="" disabled selected hidden>Select your role</option>
+                                <option value="manager" className="text-black">Manager</option>
+                                <option value="student" className="text-black">Student</option>
+                            </select>
+                        </div>
+                        {errors.role?.message && <p className='text-red-500 text-xs -mt-5 mx-auto'>{errors.role?.message}</p>}
+
+                        
                         <hr className="border-[#262A56]" />
-                        <button type="submit" className="w-full rounded-full border p-[14px_20px] text-center font-semibold text-white bg-[#662FFF] border-[#8661EE] shadow-[-10px_-6px_10px_0_#7F33FF_inset]">
+                        <button disabled={isPending} type="submit" className="w-full rounded-full border p-[14px_20px] text-center font-semibold text-white bg-[#662FFF] border-[#8661EE] shadow-[-10px_-6px_10px_0_#7F33FF_inset]">
                             Sign Up Now
                         </button>
                     </form>
@@ -75,9 +117,9 @@ const SignUp = () => {
                     </div>
                 </div>
             </div>
-        ) : (
+        {/* ) : (
             <Pricing data={dataSignUp}/>
-        )}
+        )} */}
     </>
   )
 }

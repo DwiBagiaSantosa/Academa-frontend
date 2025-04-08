@@ -9,7 +9,7 @@ const Students = () => {
         {overview?.students?.map((student) => (
             <div className="card flex items-center gap-5" key={student._id}>
                 <div className="flex shrink-0 w-20 h-20 rounded-[20px] bg-[#D9D9D9] overflow-hidden">
-                    <img src={student.photo_url} className="w-full h-full object-cover" alt="thumbnail"/>
+                    <img src={student.photo.url} className="w-full h-full object-cover" alt="thumbnail"/>
                 </div>
                 <div className="w-full">
                     <h3 className="font-bold text-xl leading-[30px] line-clamp-1">{student.name}</h3>

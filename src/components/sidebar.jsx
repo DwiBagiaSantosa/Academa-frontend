@@ -14,7 +14,7 @@ const Sidebar = ({
                 <ul className="flex flex-col gap-4">
                     <p className="font-semibold text-xs leading-[18px] text-white">GENERAL</p>
                     <li>
-                        <Link to="/manager" >
+                        <Link to={isAdmin ? "/manager" : "/student"} >
                             <div className="flex items-center gap-3 w-full rounded-full border p-[14px_20px] transition-all duration-300 hover:bg-[#662FFF] hover:border-[#8661EE] hover:shadow-[-10px_-6px_10px_0_#7F33FF_inset] bg-[#662FFF] border-[#8661EE] shadow-[-10px_-6px_10px_0_#7F33FF_inset]">
                                 <img src="/assets/images/icons/3dcube-white.svg" className="w-6 h-6" alt="icon"/>
                                 <span className="font-semibold text-white">Overview</span>

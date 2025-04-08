@@ -10,7 +10,8 @@ const Header = ({type = 'manager'}) => {
     const handleLogout = () => {
         secureLocalStorage.removeItem(STORAGE_KEY)
 
-        window.location.replace(`/${type}/sign-in`)
+        // window.location.replace(`/${type}/sign-in`)
+        window.location.replace(`/`)
     }
 
   return (

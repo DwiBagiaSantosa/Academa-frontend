@@ -10,13 +10,13 @@ import secureLocalStorage from 'react-secure-storage'
 import { STORAGE_KEY } from '../../utils/const'
 import Proptypes from 'prop-types'
 
-const SignIn = ({type = 'manager'}) => {
+const SignIn = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(signInSchema)
     })
 
-    const {isLoading, mutateAsync} = useMutation({
+    const {isPending, mutateAsync} = useMutation({
         mutationFn: (data) => postSignIn(data) 
     })
 
@@ -48,18 +48,18 @@ const SignIn = ({type = 'manager'}) => {
             <nav className="flex items-center justify-between p-[30px]">
                 <Navbar/>
                 <div className="flex items-center gap-3">
-                    <Link to="#" >
+                    {/* <Link to="#" >
                         <div className="flex items-center gap-3 w-fit rounded-full border p-[14px_20px] transition-all duration-300 hover:bg-[#662FFF] hover:border-[#8661EE] hover:shadow-[-10px_-6px_10px_0_#7F33FF_inset] bg-[#070B24] border-[#24283E] shadow-[-10px_-6px_10px_0_#181A35_inset]">
                             <span className="font-semibold text-white">My Dashboard</span>
                         </div>
-                    </Link>           
-                   {type === 'manager' && (
-                     <Link to="/manager/sign-up" >
+                    </Link>            */}
+                   
+                     <Link to="/sign-up" >
                         <div className="flex items-center gap-3 w-fit rounded-full border p-[14px_20px] transition-all duration-300 hover:bg-[#662FFF] hover:border-[#8661EE] hover:shadow-[-10px_-6px_10px_0_#7F33FF_inset] bg-[#662FFF] border-[#8661EE] shadow-[-10px_-6px_10px_0_#7F33FF_inset]">
                             <span className="font-semibold text-white">Sign Up</span>
                         </div>
                     </Link>
-                   )}
+                   
                 </div>
             </nav>
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-[400px] h-fit rounded-[20px] border border-[#262A56] p-[30px] gap-[30px] bg-[#080A2A] m-auto">
@@ -84,8 +84,8 @@ const SignIn = ({type = 'manager'}) => {
                 </div>
                 {errors.password?.message && <p className='text-red-500 text-xs -mt-5 mx-auto'>{errors.password?.message}</p>}
                 <hr className="border-[#262A56]" />
-                <button disabled={isLoading}  type="submit" className="w-full rounded-full border p-[14px_20px] text-center font-semibold text-white bg-[#662FFF] border-[#8661EE] shadow-[-10px_-6px_10px_0_#7F33FF_inset]">
-                    Sign In {type === 'manager' ? 'To Manage' : ''}
+                <button disabled={isPending}  type="submit" className="w-full rounded-full border p-[14px_20px] text-center font-semibold text-white bg-[#662FFF] border-[#8661EE] shadow-[-10px_-6px_10px_0_#7F33FF_inset]">
+                    Sign In
                 </button>
             </form>
         </div>

@@ -32,7 +32,7 @@ export default function ManageCourseDetail() {
         </header>
         <section id="CourseInfo" class="flex gap-[50px]">
             <div id="Thumbnail" class="flex shrink-0 w-[480px] h-[250px] rounded-[20px] bg-[#D9D9D9] overflow-hidden">
-                <img src={course?.thumbnail_url} class="w-full h-full object-cover" alt="thumbnail"/>
+                <img src={course?.thumbnail.url} class="w-full h-full object-cover" alt="thumbnail"/>
             </div>
             <div class="grid grid-cols-2 gap-5 w-full">
                 <div class="flex flex-col rounded-[20px] border border-[#CFDBEF] p-5 gap-4">

@@ -9,7 +9,7 @@ import { createStudent, updateStudent } from "../../../services/studentService";
 
 export default function ManageStudentCreate() {
   const student = useLoaderData()
-  console.log("🚀 ~ ManageStudentCreate ~ student:", student)
+  // console.log("🚀 ~ ManageStudentCreate ~ student:", student)
 
   const {register, handleSubmit, formState: { errors }, setValue} = useForm({
     resolver: zodResolver(student === undefined ? createStudentSchema : updateStudentSchema),
@@ -26,7 +26,7 @@ export default function ManageStudentCreate() {
   })
 
   const mutateUpdate = useMutation({
-    mutationFn: (data) => updateStudent(data, student?._id)
+    mutationFn: (data) => updateStudent(data, student?._id),
   })
 
   const [photo, setPhoto] = useState(null);
@@ -47,6 +47,7 @@ export default function ManageStudentCreate() {
         await mutateCreate.mutateAsync(formData)
       } else {
         await mutateUpdate.mutateAsync(formData)
+        console.log("mutation success");
       }
 
       navigate('/manager/students')
@@ -216,7 +217,7 @@ export default function ManageStudentCreate() {
             disabled={student === null ? mutateCreate.isPending : mutateUpdate.isPending}
             className="w-full rounded-full p-[14px_20px] font-semibold text-[#FFFFFF] bg-[#662FFF] text-nowrap"
           >
-            {student === null ? "Add" : "Update"} Now
+            {student === undefined ? "Add" : "Update"} Now
           </button>
         </div>
       </form>

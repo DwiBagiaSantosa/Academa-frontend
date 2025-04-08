@@ -4,9 +4,10 @@ export const signUpSchema = z.object({
     name: z.string().nonempty("Name is required").min(5, "Name must be at least 5 characters long"),
     email: z.string().nonempty("Email is required").email(),
     password: z.string().nonempty("Password is required").min(8, "Password must be at least 8 characters long"),
+    role: z.enum(["manager", "student"], { required_error: "Please select a role" }),
 })
 
-export const signInSchema = signUpSchema.omit({ name: true })
+export const signInSchema = signUpSchema.omit({ name: true, role: true })
 
 export const createCourseSchema = z.object({
     name: z.string().min(5),

@@ -4,12 +4,12 @@ import { STORAGE_KEY } from './const'
 
 const apiInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
-    timeout: 3000,
+    timeout: 10000,
 })
 
 export const apiInstanceAuth = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
-    timeout: 3000,
+    timeout: 10000,
 })
 
 apiInstanceAuth.interceptors.request.use((config) => {

@@ -8,6 +8,8 @@ import { createCourse, updateCourse } from "../../../services/courseService";
 
 export default function ManageCreateCourse() {
   const data = useLoaderData();
+  console.log("🚀 ~ ManageCreateCourse ~ data:", data)
+  // console.log(data?.course?.category);
   const { id } = useParams();
   // console.log("🚀 ~ ManageCreateCourse ~ categories:", categories)
 
@@ -20,7 +22,7 @@ export default function ManageCreateCourse() {
     resolver: zodResolver(data.course === null ? createCourseSchema : updateCourseSchema),
     defaultValues: {
       name: data?.course?.name,
-      categoryId: data?.course?.category,
+      categoryId: data?.course?.category?._id,
       tagline: data?.course?.tagline,
       description: data?.course?.description
     }
@@ -69,7 +71,7 @@ export default function ManageCreateCourse() {
       <header className="flex items-center justify-between gap-[30px]">
         <div>
           <h1 className="font-extrabold text-[28px] leading-[42px]">
-            New Course
+            {data.course === null ? "Create" : "Update"} Course
           </h1>
           <p className="text-[#838C9D] mt-[1]">Create new future for company</p>
         </div>
@@ -200,12 +202,14 @@ export default function ManageCreateCourse() {
               id="category"
               className="appearance-none outline-none w-full py-3 px-2 -mx-2 font-semibold placeholder:font-normal placeholder:text-[#838C9D] !bg-transparent"
             >
+               
               <option value="" hidden>
                 Choose one category
-              </option>
-              {data?.categories?.data?.map((category) => (
-                <option key={category._id} value={category._id}>
-                  {category.name}
+              </option>) 
+              
+              {data?.categories?.data?.map((item) => (
+                <option key={item._id} value={item._id}>
+                  {item.name}
                 </option>
               ))}
             </select>
@@ -250,10 +254,10 @@ export default function ManageCreateCourse() {
           </button>
           <button
             type="submit"
-            disabled={data?.course === null ? mutateCreate.isLoading : mutateUpdate.isLoading}
+            disabled={data?.course === null ? mutateCreate.isPending : mutateUpdate.isPending}
             className="w-full rounded-full p-[14px_20px] font-semibold text-[#FFFFFF] bg-[#662FFF] text-nowrap"
           >
-            Create Now
+            {data?.course === null ? "Create" : "Update"} Now
           </button>
         </div>
       </form>
