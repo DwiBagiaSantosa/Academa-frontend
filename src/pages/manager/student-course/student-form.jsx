@@ -9,7 +9,7 @@ import { addStudentCourse } from "../../../services/courseService";
 export default function StudentForm() {
   const data = useLoaderData();
   const { id } = useParams();
-  console.log("🚀 ~ ManageCreateCourse ~ data:", data)
+  // console.log("🚀 ~ ManageCreateCourse ~ data:", data)
 
   const {
     register,
@@ -61,7 +61,7 @@ export default function StudentForm() {
       >
         <div className="flex flex-col gap-[10px]">
           <label htmlFor="category" className="font-semibold">
-            Select Category
+            Select a Student
           </label>
           <div className="flex items-center w-full rounded-full border border-[#CFDBEF] gap-3 px-5 transition-all duration-300 focus-within:ring-2 focus-within:ring-[#662FFF]">
             <img

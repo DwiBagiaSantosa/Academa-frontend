@@ -6,6 +6,7 @@ const Students = () => {
   return (
     <section id="LatestStudents" className="flex flex-col rounded-[30px] p-[30px] gap-[30px] bg-[#F8FAFB]">
         <h2 className="font-extrabold text-[22px] leading-[33px]">Latest Students</h2>
+        {overview?.students?.length === 0 && <p className="text-[#838C9D] my-auto ">You don't have any student yet</p>}
         {overview?.students?.map((student) => (
             <div className="card flex items-center gap-5" key={student._id}>
                 <div className="flex shrink-0 w-20 h-20 rounded-[20px] bg-[#D9D9D9] overflow-hidden">

@@ -23,6 +23,7 @@ export default function ManageStudents() {
                 </Link>
             </div>
         </header>
+        {students?.length === 0 && <p className="text-[#838C9D] text-center my-auto text-xl">You don't have any student yet</p>}
         <section id="CourseList" className="flex flex-col w-full rounded-[30px] p-[30px] gap-[30px] bg-[#F8FAFB]">
             {students?.map((item) => (
                 <StudentItem key={item._id} id={item._id} imageUrl={item.photo.url} name={item.name} totalCourse={item.courses.length} />

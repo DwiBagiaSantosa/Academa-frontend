@@ -6,6 +6,7 @@ import StudentItem from './student-item'
 export default function StudentCourseList() {
     const {id} = useParams()
     const course = useLoaderData()
+    console.log("🚀 ~ StudentCourseList ~ course:", course)
     // console.log("🚀 ~ StudentCourseList ~ students:", students)
   return (
     <>
@@ -23,6 +24,7 @@ export default function StudentCourseList() {
                 </Link>
             </div>
         </header>
+        {course?.students?.length === 0 && <p className="text-[#838C9D] text-center my-auto text-xl">This course doesn't have any student yet</p>}
         <section id="CourseList" className="flex flex-col w-full rounded-[30px] p-[30px] gap-[30px] bg-[#F8FAFB]">
             {course?.students?.map((item) => (
                 <StudentItem key={item._id} id={item._id} imageUrl={item.photo.url} name={item.name} />

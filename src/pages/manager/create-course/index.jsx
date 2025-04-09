@@ -8,7 +8,7 @@ import { createCourse, updateCourse } from "../../../services/courseService";
 
 export default function ManageCreateCourse() {
   const data = useLoaderData();
-  console.log("🚀 ~ ManageCreateCourse ~ data:", data)
+  // console.log("🚀 ~ ManageCreateCourse ~ data:", data)
   // console.log(data?.course?.category);
   const { id } = useParams();
   // console.log("🚀 ~ ManageCreateCourse ~ categories:", categories)

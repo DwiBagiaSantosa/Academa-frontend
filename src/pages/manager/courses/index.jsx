@@ -4,6 +4,7 @@ import { Link, useLoaderData } from 'react-router-dom'
 
 export default function ManageCourse() {
     const courses = useLoaderData();
+    // console.log("🚀 ~ ManageCourse ~ courses:", courses)
 
   return (
     <>
@@ -21,6 +22,7 @@ export default function ManageCourse() {
                 </Link>
             </div>
         </header>
+        { courses?.data?.length === 0 && <p className="text-[#838C9D] text-center my-auto text-xl">You don't have any course yet</p>}
         <section id="CourseList" className="flex flex-col w-full rounded-[30px] p-[30px] gap-[30px] bg-[#F8FAFB]">
             {courses?.data?.map((course) => (
                 <CardCourse key={course._id} category={course.category.name} id={course._id} imageUrl={course.thumbnail.url} name={course.name} totalStudents={course.total_students} />

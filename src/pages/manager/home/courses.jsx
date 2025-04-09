@@ -3,11 +3,12 @@ import { Link, useLoaderData } from 'react-router-dom'
 
 const Courses = () => {
     const overview = useLoaderData();
-    console.log("🚀 ~ Courses ~ overview:", overview)
+    // console.log("🚀 ~ Courses ~ overview:", overview)
 
   return (
     <section id="LatestCourse" className="flex flex-col rounded-[30px] p-[30px] gap-[30px] bg-[#F8FAFB]">
         <h2 className="font-extrabold text-[22px] leading-[33px]">Latest Courses</h2>
+        {overview?.courses?.length === 0 && <p className="text-[#838C9D] my-auto ">You don't have any course yet</p>}
         {overview?.courses?.map((course) => (
             <div className="card flex items-center gap-5" key={course._id}>
                 <div className="flex shrink-0 w-[100px] h-20 rounded-[20px] bg-[#D9D9D9] overflow-hidden">
