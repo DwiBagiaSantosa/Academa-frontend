@@ -1,7 +1,7 @@
 import React from 'react'
 import Courses from './courses'
 import Students from './students'
-import { useLoaderData } from 'react-router-dom'
+import { Link, useLoaderData } from 'react-router-dom'
 
 
 const ManagerHome = () => {
@@ -18,12 +18,12 @@ const ManagerHome = () => {
               <p className="text-[#838C9D] mt-[1]">Grow your company quickly</p>
           </div>
           <div className="flex items-center gap-3">
-              <a href="#" className="w-fit rounded-full border border-[#060A23] p-[14px_20px] font-semibold text-nowrap">
+              <Link to="#" className="w-fit rounded-full border border-[#060A23] p-[14px_20px] font-semibold text-nowrap">
                   Customize
-              </a>
-              <a href="" className="w-fit rounded-full p-[14px_20px] font-semibold text-[#FFFFFF] bg-[#662FFF] text-nowrap">
+              </Link>
+              <Link to="" className="w-fit rounded-full p-[14px_20px] font-semibold text-[#FFFFFF] bg-[#662FFF] text-nowrap">
                   Export Data
-              </a>
+              </Link>
           </div>
       </header>
       <section id="Stats" className="flex rounded-[30px] p-[30px] gap-[30px] bg-[#F8FAFB]">
