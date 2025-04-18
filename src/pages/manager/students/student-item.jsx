@@ -30,7 +30,7 @@ export default function StudentItem({
   return (
     <div className="card flex items-center gap-5">
         <div className="relative flex shrink-0 w-20 h-20">
-            <div className="rounded-[20px] bg-[#D9D9D9] overflow-hidden">
+            <div className="w-20 h-20 rounded-[20px] bg-[#D9D9D9] overflow-hidden">
                 <img src={imageUrl} className="w-full h-full object-cover" alt="photo"/>
             </div>
         </div>
